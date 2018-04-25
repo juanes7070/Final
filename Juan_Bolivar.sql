@@ -28,6 +28,16 @@
    left join Orders o on C.ID = o.CUSTOMER_ID
    order by o.ORDER_DATE asc
 --------------------------------------------------------
+--  DDL for View VIEW_4
+--------------------------------------------------------
+
+  CREATE OR REPLACE NONEDITIONABLE VIEW "EJERCICIOS"."VIEW_4" ("SALESMAN_ID", "SALESMAN_NAME", "ORDER_ID", "ORDER_AMOUNT", "CUSTOMER_ID", "CUSTOMER_NAME", "CUSTOMER_GRADE") AS 
+  Select s.id salesman_id,s.NAME  as salesman_name, o.id as order_id, o.AMOUNT as order_amount, c.id as customer_id, C.NAME customer_name, C.GRADE customer_grade
+  from  SALESMAN s
+  left join Customers C on C.SALESMAN_ID = s.id
+  left join orders o on o.CUSTOMER_ID = C.id
+  where o.AMOUNT >= 2000 and C.GRADE is not null
+--------------------------------------------------------
 --  DDL for Table CUSTOMERS
 --------------------------------------------------------
 
@@ -60,11 +70,6 @@
 	"COMMISSION" NUMBER(5,2)
    )
 --------------------------------------------------------
---  DDL for Index PK_SALESMAN
---------------------------------------------------------
-
-  CREATE UNIQUE INDEX "EJERCICIOS"."PK_SALESMAN" ON "EJERCICIOS"."SALESMAN" ("ID")
---------------------------------------------------------
 --  DDL for Index PK_CUSTOMERS
 --------------------------------------------------------
 
@@ -74,6 +79,11 @@
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "EJERCICIOS"."PK_ORDERS" ON "EJERCICIOS"."ORDERS" ("ID")
+--------------------------------------------------------
+--  DDL for Index PK_SALESMAN
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "EJERCICIOS"."PK_SALESMAN" ON "EJERCICIOS"."SALESMAN" ("ID")
 --------------------------------------------------------
 --  Constraints for Table CUSTOMERS
 --------------------------------------------------------
