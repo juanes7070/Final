@@ -41,3 +41,15 @@ End Loop;
 End;
 
 execute CALCULAR_SIMULACION(2.2,72,6000000);
+
+--2. Vista (0.5)
+
+
+CREATE OR REPLACE VIEW PLAN_AMORTIZACION
+AS
+
+select NUMERO_CUOTA, CUOTA_MENSUAL, ABONO_CAPITAL, ABONO_INTERES, saldo,(select round(AVG(ABONO_INTERES),2)  from amortizacion) promedio_interes
+from amortizacion;
+
+
+
