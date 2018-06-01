@@ -53,37 +53,63 @@ from amortizacion;
 
 
 --3. Function
-declare n_start number:=4;
- n_stop number;
+
+Create or replace function GetSerie( Inicio number,n_stop number)
+return number
+IS
  Numero number;
  type number_array is varray(50) OF INTEGER;
  Numerotexto varchar2(10000);
  var varchar2(1);
  valor number;
  multiplicado number:=1;
-
+contador number:=1;
+n_start number :=Inicio;
 begin
 
-if (n_start >0) Then
+
+  if (n_start >0) Then
+
 
 while n_start<10
 loop
 n_start:= n_start+n_start;
+contador:=contador+1;
 End Loop;
 End if;
 
+
+ 
 Numerotexto:=n_start ;
 
-FOR i IN 1..LENGTH(Numerotexto) LOOP
- var := substr(Numerotexto,i,1);
- valor:=TO_NUMBER(var, '99');
-if valor>0 then
-multiplicado := multiplicado*valor;
-end if;
+while contador<n_stop
+LOOP
+    multiplicado:=1;
+    FOR i IN 1..LENGTH(Numerotexto) LOOP
+     var := substr(Numerotexto,i,1);
+     valor:=TO_NUMBER(var, '99');
+        if valor>0 then
+        multiplicado := multiplicado*valor;
+        end if;
+     
+    END LOOP;
+
+Numerotexto:=Numerotexto+multiplicado;
+contador:= contador+1;
+
 END LOOP;
 
-n_start := n_start+multiplicado;
-
- DBMS_OUTPUT.PUT_LINE(n_start);
+-- end loop;
+ return Numerotexto;
  
 end;
+
+--LLAMAR FUNCION
+declare
+   result number;
+begin
+   -- Call the function
+   result := GetSerie(1,9);
+   DBMS_OUTPUT.PUT_LINE(result);
+end;
+
