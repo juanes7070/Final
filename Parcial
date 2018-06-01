@@ -1,0 +1,43 @@
+--1. Procedimiento (2.0)
+
+
+CREATE OR REPLACE PROCEDURE CALCULAR_SIMULACION (tasa_porcentaje Decimal,total_cuotas number,valor_prestamo decimal)
+as
+cuota_mensual decimal(15,2);
+saldo decimal(15,2);
+n decimal (15,4);
+d decimal (15,4);
+abono_interes decimal (15,2);
+abono_capital decimal (15,2);
+tasa Decimal(15,4);
+numerocuota number;
+
+begin
+
+delete from amortizacion;
+tasa:= tasa_porcentaje/100;
+saldo:=valor_prestamo;
+
+numerocuota:=total_cuotas;
+n:=tasa*saldo;
+d:= 1 - POWER((1 + tasa), ( -total_cuotas));
+
+cuota_mensual:=Ceil(n/d);
+
+
+while numerocuota>0
+Loop
+
+abono_interes := round(tasa * saldo);
+abono_capital := round(cuota_mensual - abono_interes);
+
+saldo:= saldo-abono_capital;
+
+Insert INTO amortizacion (numero_cuota ,cuota_mensual ,abono_capital ,abono_interes ,saldo)
+Values(numerocuota,cuota_mensual,abono_capital,abono_interes,saldo);
+
+numerocuota:= numerocuota-1;
+End Loop;
+End;
+
+execute CALCULAR_SIMULACION(2.2,72,6000000);
